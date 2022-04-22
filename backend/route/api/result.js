@@ -4,12 +4,11 @@ const axios = require("axios");
 const InputDataDecoder = require("ethereum-input-data-decoder");
 
 route.get("/", async (req, res) => {
-  const hash = req.body;
-  const data = await axios.get(` https://api-rinkeby.etherscan.io/api
-   ?module=proxy
-   &action=eth_getTransactionByHash
-   &txhash=hash
-   &apikey=KOrVTfsFkAOcMY-4VnEqVjgYFMGga9pN `);
+  const { hash } = req.body;
+  // console.log("hash: ", hash);
+  const data = await axios.get(
+    ` https://api-rinkeby.etherscan.io/api?module=proxy&action=eth_getTransactionByHash&txhash=${hash}&apikey=YourApiKeyToken`
+  );
 
   const abi = [
     {
@@ -115,13 +114,21 @@ route.get("/", async (req, res) => {
       type: "function",
     },
   ];
-
+  // console.log(data.data);
   const decoder = new InputDataDecoder(abi);
-  const result = decoder.decodeData(data.input);
+  const result = decoder.decodeData(data.data.result.input).inputs;
 
   res.json({
     status: true,
-    result,
+    student: {
+      name: result[0],
+      rollNo: result[1],
+      result: result[2],
+      sem1: result[3],
+      sem2: result[4],
+      gender: result[5],
+      university: result[6],
+    },
   });
 });
 
