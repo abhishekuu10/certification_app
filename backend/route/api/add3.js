@@ -9,6 +9,8 @@ route.post("/", async (req, res) => {
   const address = "0x571b66B74864b21243fD24bF0B5dda259C83F367";
   const account = "0x809c92c89a7b71115ad6d3b739ac6bdee288a80f";
 
+  console.log(req.body);
+
   const nonce = await web3.eth.getTransactionCount(account, "latest"); // nonce starts counting from 0
   const { name, rollNo, result, sem1, sem2, gender, university } = req.body;
   const abi = require("../../build/certificate.json").abi;

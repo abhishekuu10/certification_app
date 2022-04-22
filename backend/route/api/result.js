@@ -3,9 +3,9 @@ const route = Router();
 const axios = require("axios");
 const InputDataDecoder = require("ethereum-input-data-decoder");
 
-route.get("/", async (req, res) => {
+route.post("/", async (req, res) => {
   const { hash } = req.body;
-  // console.log("hash: ", hash);
+  console.log("hash: ", hash);
   const data = await axios.get(
     ` https://api-rinkeby.etherscan.io/api?module=proxy&action=eth_getTransactionByHash&txhash=${hash}&apikey=YourApiKeyToken`
   );
@@ -114,9 +114,10 @@ route.get("/", async (req, res) => {
       type: "function",
     },
   ];
-  // console.log(data.data);
+  // console.log("result", data.data.result.input);
   const decoder = new InputDataDecoder(abi);
-  const result = decoder.decodeData(data.data.result.input).inputs;
+  var result = decoder.decodeData(data.data.result?.input);
+  result = result.inputs;
 
   res.json({
     status: true,

@@ -1,11 +1,13 @@
-const exp = require("express");
-const { Router } = exp;
+const express = require("express");
+const { Router } = express;
 const route = Router();
-const app = exp();
+const app = express();
 const http = require("http");
 const cors = require("cors");
 
-app.use(exp.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use(express.json());
 
 app.use(cors({ origin: "*" }));
 
@@ -13,6 +15,6 @@ app.use("/api", require("./route/api").route);
 
 const httpServer = http.createServer(app);
 // eslint-disable-next-line no-console
-httpServer.listen(8845, () => {
-  console.debug(`The server is running on port 8845`);
+httpServer.listen(8846, () => {
+  console.debug(`The server is running on port 8846`);
 });
