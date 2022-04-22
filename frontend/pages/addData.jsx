@@ -49,7 +49,7 @@ const addData = () => {
 
   const handleClic = () => {
     console.log(data);
-    fetch("http://localhost:8845/api/add", {
+    fetch("http://localhost:8846/api/add", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

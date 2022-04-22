@@ -1,5 +1,5 @@
 import "../styles/globals.css";
-import { DAppProvider, ChainId } from "@usedapp/core";
+// import { DAppProvider, ChainId } from "@usedapp/core";
 
 function MyApp({ Component, pageProps }) {
   return (
