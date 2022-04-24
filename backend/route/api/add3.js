@@ -37,24 +37,20 @@ route.post("/", async (req, res) => {
     PRIVATE_KEY
   );
   var hashcode;
-  await web3.eth.sendSignedTransaction(
-    signedTx.rawTransaction,
-    function (error, hash) {
-      hashcode = hash;
-      if (!error) {
-        console.log(
-          "🎉 The hash of your transaction is: ",
-          hash,
-          "\n Check Alchemy's Mempool to view the status of your transaction!"
-        );
-      } else {
-        console.log(
-          "❗Something went wrong while submitting your transaction:",
-          error
-        );
-      }
+  await web3.eth.sendSignedTransaction(signedTx.rawTransaction, function (
+    error,
+    hash
+  ) {
+    hashcode = hash;
+    if (!error) {
+      console.log("🎉 The hash of your transaction is: ", hash);
+    } else {
+      console.log(
+        "❗Something went wrong while submitting your transaction:",
+        error
+      );
     }
-  );
+  });
 
   res.json({
     status: true,

@@ -7,6 +7,7 @@ import Select from "react-select";
 
 const addData = () => {
   const [sem, setSem] = useState([1]);
+  const [isLoading, setIsLoading] = useState(false);
   let [data, setData] = useState({});
 
   const gender = [
@@ -47,7 +48,9 @@ const addData = () => {
     });
   };
 
-  const handleClic = () => {
+  const handleClic = (e) => {
+    setIsLoading(true);
+    e.preventDefault();
     console.log(data);
     fetch("http://localhost:8846/api/add", {
       method: "POST",
@@ -57,7 +60,14 @@ const addData = () => {
       body: JSON.stringify(data),
     })
       .then((res) => res.json())
-      .then((data) => alert(data));
+      .then((data) => {
+        setIsLoading(false);
+        alert(JSON.stringify(data));
+      })
+      .catch((err) => {
+        alert(err);
+        setIsLoading(false);
+      });
   };
 
   return (
@@ -134,7 +144,8 @@ const addData = () => {
             <input
               className="w-full p-2 text-lg border-solid border-2 border-black"
               type="submit"
-              value="Add"
+              disabled={isLoading}
+              value={isLoading ? "Loading..." : "Add"}
             />
           </div>
         </form>
