@@ -32,6 +32,8 @@ app.use("/api", require("./route/api").route);
 
 const httpServer = http.createServer(app);
 // eslint-disable-next-line no-console
+
 httpServer.listen(8846, () => {
   console.debug(`The server is running on port ${config.port}`);
+
 });

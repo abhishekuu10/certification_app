@@ -4,8 +4,10 @@ import Input from "../components/Input";
 import Button from "../components/Button";
 import Link from "next/link";
 import Select from "react-select";
+import { useRouter } from 'next/router'
 
 const addData = () => {
+  const router = useRouter()
   const [sem, setSem] = useState([1]);
   const [isLoading, setIsLoading] = useState(false);
   let [data, setData] = useState({});
@@ -49,25 +51,32 @@ const addData = () => {
   };
 
   const handleClic = (e) => {
-    setIsLoading(true);
-    e.preventDefault();
-    console.log(data);
-    fetch("http://localhost:8846/api/add", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setIsLoading(false);
-        alert(JSON.stringify(data));
+
+    try {
+         setIsLoading(true);
+      e.preventDefault();
+      fetch("http://localhost:8846/api/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
       })
-      .catch((err) => {
-        alert(err);
-        setIsLoading(false);
-      });
+        .then((res) => res.json())
+        .then((json) => {
+          if (json.status) {
+               setIsLoading(false);
+            router.push(
+              { pathname: "/hashData", query: { hashValue: json.hash } },
+              "hashData"
+            );
+            // router.push({ pathname: '/hashData', state: { hashValue: json.hash } });
+          }
+        });
+    } catch (error) {
+      console.log(error);
+    }
+
   };
 
   return (
