@@ -9,6 +9,7 @@ import { useRouter } from 'next/router'
 const addData = () => {
   const router = useRouter()
   const [sem, setSem] = useState([1]);
+  const [isLoading, setIsLoading] = useState(false);
   let [data, setData] = useState({});
 
   const gender = [
@@ -50,9 +51,11 @@ const addData = () => {
   };
 
   const handleClic = (e) => {
+
     try {
+         setIsLoading(true);
       e.preventDefault();
-      fetch("http://localhost:8000/api/add", {
+      fetch("http://localhost:8846/api/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -62,6 +65,7 @@ const addData = () => {
         .then((res) => res.json())
         .then((json) => {
           if (json.status) {
+               setIsLoading(false);
             router.push(
               { pathname: "/hashData", query: { hashValue: json.hash } },
               "hashData"
@@ -72,6 +76,7 @@ const addData = () => {
     } catch (error) {
       console.log(error);
     }
+
   };
 
   return (
@@ -148,7 +153,8 @@ const addData = () => {
             <input
               className="w-full p-2 text-lg border-solid border-2 border-black"
               type="submit"
-              value="Add"
+              disabled={isLoading}
+              value={isLoading ? "Loading..." : "Add"}
             />
           </div>
         </form>
