@@ -4,8 +4,10 @@ import Input from "../components/Input";
 import Button from "../components/Button";
 import Link from "next/link";
 import Select from "react-select";
+import { useRouter } from 'next/router'
 
 const addData = () => {
+  const router = useRouter()
   const [sem, setSem] = useState([1]);
   let [data, setData] = useState({});
 
@@ -47,17 +49,29 @@ const addData = () => {
     });
   };
 
-  const handleClic = () => {
-    console.log(data);
-    fetch("http://localhost:8846/api/add", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((res) => res.json())
-      .then((data) => alert(data));
+  const handleClic = (e) => {
+    try {
+      e.preventDefault();
+      fetch("http://localhost:8000/api/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+        .then((res) => res.json())
+        .then((json) => {
+          if (json.status) {
+            router.push(
+              { pathname: "/hashData", query: { hashValue: json.hash } },
+              "hashData"
+            );
+            // router.push({ pathname: '/hashData', state: { hashValue: json.hash } });
+          }
+        });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
