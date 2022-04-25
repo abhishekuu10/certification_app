@@ -1,10 +1,8 @@
-const { Router } = require("express");
-const route = Router();
 require("dotenv").config();
 const { API_URL, PRIVATE_KEY } = process.env;
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
 
-route.post("/", async (req, res) => {
+const addStudent = async (req, res) => {
   const web3 = createAlchemyWeb3(API_URL);
   const address = "0x571b66B74864b21243fD24bF0B5dda259C83F367";
   const account = "0x809c92c89a7b71115ad6d3b739ac6bdee288a80f";
@@ -57,6 +55,6 @@ route.post("/", async (req, res) => {
     msg: "student added",
     hash: hashcode,
   });
-});
+};
 
-module.exports = { route };
+module.exports = { addStudent };
